@@ -8,6 +8,7 @@ import BooksSection from './components/sections/BooksSection'
 import BlogSection from './components/sections/BlogSection'
 import ContactSection from './components/sections/ContactSection'
 import Cursor from './components/ui/Cursor'
+import MarqueeTape from './components/ui/MarqueeTape'
 import MusicPlayer from './components/ui/MusicPlayer'
 import { useEffect } from 'react'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
@@ -28,6 +29,7 @@ export default function App() {
       <main>
         <Hero />
         <AISection />
+        <MarqueeTape />
         <DevSection />
         <FeedbackSection />
         <BooksSection />

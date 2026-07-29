@@ -13,8 +13,6 @@
   --font-mono: 'JetBrains Mono', monospace;
   /* respiro horizontal único — o mesmo do header ao bottom */
   --gutter: clamp(1.5rem, 7vw, 7.5rem);
-  /* altura reservada para a fita cruzada na base do hero */
-  --tape-h: clamp(130px, 17vw, 210px);
   /* altura real da viewport (svh ignora a barra de endereço no mobile) */
   --vh-full: 100vh;
 }
@@ -244,8 +242,7 @@ body {
 
 .hero {
   height: var(--vh-full);
-  /* reserva a faixa embaixo: conteúdo centraliza no espaço acima dela */
-  padding: 0 0 var(--tape-h);
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -294,13 +291,13 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 46%;
+  height: 52%;
   z-index: 1;
   pointer-events: none;
   background: linear-gradient(
     180deg,
     rgba(var(--bg-rgb), 0) 0%,
-    rgba(var(--bg-rgb), 0.85) 70%,
+    rgba(var(--bg-rgb), 0.75) 62%,
     rgb(var(--bg-rgb)) 100%
   );
 }
@@ -1446,22 +1443,6 @@ body.tour-open .project {
   display: grid;
   place-items: center;
   overflow: hidden;
-}
-
-/* fita cruzando a base do hero */
-.tape-wrap--hero {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 1%;
-  height: var(--tape-h);
-  z-index: 1;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-.tape-wrap--hero .tape__item {
-  font-size: clamp(0.85rem, 1.4vw, 1.2rem);
 }
 
 .tape {

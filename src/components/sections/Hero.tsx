@@ -1,6 +1,5 @@
 import { useEffect, useRef, lazy, Suspense } from 'react'
 import gsap from 'gsap'
-import MarqueeTape from '../ui/MarqueeTape'
 
 const Silk = lazy(() => import('../ui/Silk'))
 
@@ -35,18 +34,6 @@ export default function Hero() {
         },
       })
 
-      // a fita desce e some junto com o hero
-      gsap.to('.tape-wrap--hero', {
-        yPercent: 35,
-        opacity: 0,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: '55% top',
-          scrub: true,
-        },
-      })
     }, sectionRef)
 
     return () => ctx.revert()
@@ -89,8 +76,6 @@ export default function Hero() {
           Fale comigo
         </a>
       </div>
-
-      <MarqueeTape className="tape-wrap--hero" />
 
       <div className="hero__scroll-hint">
         <span className="line" />
