@@ -2,7 +2,7 @@ import { useEffect, useRef, lazy, Suspense } from 'react'
 import gsap from 'gsap'
 import MarqueeTape from '../ui/MarqueeTape'
 
-const Orb = lazy(() => import('../ui/Orb'))
+const Silk = lazy(() => import('../ui/Silk'))
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -23,15 +23,14 @@ export default function Hero() {
         },
       })
 
-      // o orb cresce de leve e some cedo no scroll
-      gsap.to('.orb-stage', {
-        scale: 1.12,
+      // o fundo de persianas some suavemente conforme o scroll avança
+      gsap.to('.hero__bg', {
         opacity: 0,
         ease: 'none',
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: '45% top',
+          end: '60% top',
           scrub: true,
         },
       })
@@ -55,13 +54,22 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} className="section hero" id="home">
-      <div className="orb-stage" aria-hidden="true">
+      {/* fundo animado cobrindo toda a seção */}
+      <div className="hero__bg" aria-hidden="true">
         <Suspense fallback={null}>
-          <Orb hoverIntensity={1} />
+          <Silk
+            speed={5}
+            scale={1}
+            color="#4b4b4b"
+            noiseIntensity={1.5}
+            rotation={0}
+          />
         </Suspense>
       </div>
+      {/* sombra na base: transição suave para a próxima seção */}
+      <div className="hero__shade" aria-hidden="true" />
 
-      <div ref={centerRef} className="hero__center">
+      <div ref={centerRef} className="hero__left">
         <h1 className="hero__name">
           Izarley <em>Rodrigues</em>
         </h1>

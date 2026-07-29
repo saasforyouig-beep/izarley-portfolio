@@ -244,18 +244,74 @@ body {
 
 .hero {
   height: var(--vh-full);
-  /* reserva a faixa embaixo: orb e texto centralizam no espaço acima dela */
+  /* reserva a faixa embaixo: conteúdo centraliza no espaço acima dela */
   padding: 0 0 var(--tape-h);
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
 }
 
-/* texto centralizado sobre a esfera de partículas */
-.hero__center {
+/* fundo animado (persianas em gradiente) cobrindo toda a seção */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  will-change: opacity;
+}
+
+.gradient-blinds-container {
   position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.threads-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.silk-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* tema claro: inverte o render — a paleta é quase neutra, então o
+   invert preserva a identidade das persianas sobre o fundo creme */
+@media (prefers-color-scheme: light) {
+  .hero__bg {
+    filter: invert(1);
+  }
+}
+
+/* sombra na base do hero: dissolve o fundo na cor da próxima seção */
+.hero__shade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46%;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--bg-rgb), 0) 0%,
+    rgba(var(--bg-rgb), 0.85) 70%,
+    rgb(var(--bg-rgb)) 100%
+  );
+}
+
+/* conteúdo central sobre o fundo, deslocado 5% para baixo */
+.hero__left {
+  position: relative;
+  top: 5%;
   z-index: 2;
   text-align: center;
+  max-width: 760px;
   padding: 0 var(--gutter);
 }
 
@@ -308,7 +364,6 @@ body {
   color: var(--light-70);
   max-width: 40ch;
   line-height: 1.7;
-  text-shadow: 0 0 20px rgb(var(--bg-rgb));
 }
 
 .hero__scroll-hint {
@@ -339,32 +394,6 @@ body {
 @keyframes scan {
   0% { transform: translateX(-100%); }
   60%, 100% { transform: translateX(100%); }
-}
-
-/* palco do orb: mesmo centro do texto, acima da fita, sem estourar o hero */
-.orb-stage {
-  position: absolute;
-  inset: 0 0 var(--tape-h) 0;
-  z-index: 1;
-  display: grid;
-  place-items: center;
-  pointer-events: none;
-  will-change: transform, opacity;
-}
-
-.orb-container {
-  /* dimensionado pelo palco real (altura livre acima da fita), com piso de
-     62vw para o anel nunca ficar menor que o título, limitado a 105vw.
-     Sem deslocamentos: anel e texto compartilham exatamente o mesmo centro */
-  /* 8% menor que a base, deslocada 14% para cima */
-  width: calc(min(max(calc((var(--vh-full) - var(--tape-h)) * 1.16), 62vw), 105vw) * 0.92);
-  aspect-ratio: 1 / 1;
-  position: relative;
-  transform: translateY(-14%);
-}
-
-.orb-container canvas {
-  display: block;
 }
 
 /* ============ AI Section ============ */
