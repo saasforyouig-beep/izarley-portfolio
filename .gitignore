@@ -6,3 +6,4 @@ server/node_modules
 references/*.zip
 .env
 src/.DS_Store
+.claude/

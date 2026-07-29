@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git commit -m 'Hero: fundo Silk em tela cheia com sombra de transição; conteúdo central *)"
-    ]
-  }
-}
