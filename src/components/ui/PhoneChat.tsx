@@ -182,7 +182,13 @@ export default function PhoneChat() {
             {messages.map((m) => {
               const link = m.from === 'ai' ? m.text.match(WA_LINK_RE)?.[0] : undefined
               const text = link
-                ? m.text.replace(link, '').replace(/\s{2,}/g, ' ').replace(/\s+([.!?,:])/g, '$1').trim()
+                ? m.text
+                    .replace(link, '')
+                    .replace(/\s{2,}/g, ' ')
+                    .replace(/\s+([.!?,:])/g, '$1')
+                    // restos do link removido: "aqui:." -> "aqui:", "aqui:," -> "aqui:"
+                    .replace(/([:,;])[.!?,]+/g, '$1')
+                    .trim()
                 : m.text
               return (
                 <div key={m.id} className={`chat__bubble chat__bubble--${m.from}`}>

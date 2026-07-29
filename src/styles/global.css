@@ -724,7 +724,9 @@ body {
 
 /* botão de redirecionamento ao WhatsApp dentro da bolha da IA */
 .chat__wa-btn {
-  display: inline-flex;
+  /* sempre numa linha própria, abaixo do texto da bolha */
+  display: flex;
+  width: fit-content;
   align-items: center;
   gap: 0.5rem;
   margin-top: 0.6rem;
