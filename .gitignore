@@ -1,0 +1,8 @@
+node_modules
+*.local
+.DS_Store
+server/.env
+server/node_modules
+references/*.zip
+.env
+src/.DS_Store

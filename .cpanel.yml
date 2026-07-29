@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    # copia o build (dist/) para a raiz do site no cPanel
+    - export DEPLOYPATH=$HOME/public_html
+    - /bin/rm -rf $DEPLOYPATH/assets
+    - /bin/cp -R dist/. $DEPLOYPATH/

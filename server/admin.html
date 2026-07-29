@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>admin · izarley.com.br</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --dark: #060b0b; --light: #fff3ea;
+    --l70: rgba(255,243,234,.72); --l40: rgba(255,243,234,.4);
+    --l15: rgba(255,243,234,.15); --l08: rgba(255,243,234,.08); --l04: rgba(255,243,234,.04);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--dark); color: var(--light); font-family: 'Space Grotesk', system-ui, sans-serif; min-height: 100vh; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  header { display: flex; justify-content: space-between; align-items: center; padding: 1.4rem 2rem; border-bottom: 1px solid var(--l08); }
+  header .logo { font-family: 'JetBrains Mono', monospace; font-size: .85rem; letter-spacing: .1em; }
+  header .logo span { opacity: .5; }
+  main { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+  h2 { font-size: 1.1rem; font-weight: 500; margin: 2.2rem 0 1rem; letter-spacing: -.01em; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }
+  .card { border: 1px solid var(--l15); border-radius: 12px; padding: 1.1rem 1.2rem; background: var(--l04); }
+  .card b { display: block; font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 500; }
+  .card i { font-style: normal; font-family: 'JetBrains Mono', monospace; font-size: .6rem; letter-spacing: .18em; text-transform: uppercase; color: var(--l40); }
+  table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; color: var(--l40); padding: .6rem .8rem; border-bottom: 1px solid var(--l15); }
+  td { padding: .65rem .8rem; border-bottom: 1px solid var(--l08); color: var(--l70); vertical-align: top; }
+  tr.lead-row { cursor: pointer; }
+  tr.lead-row:hover td { background: var(--l04); color: var(--light); }
+  .pill { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; padding: .25rem .6rem; border-radius: 999px; border: 1px solid var(--l15); }
+  .pill.on { background: var(--light); color: var(--dark); border-color: var(--light); }
+  .filters { display: flex; gap: .6rem; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; }
+  button, select { font-family: 'JetBrains Mono', monospace; font-size: .65rem; letter-spacing: .1em; text-transform: uppercase; background: transparent; color: var(--light); border: 1px solid var(--l40); border-radius: 999px; padding: .5rem 1.1rem; cursor: pointer; }
+  button.active, button:hover { background: var(--light); color: var(--dark); }
+  .bar { display: flex; align-items: center; gap: .8rem; margin: .3rem 0; }
+  .bar .name { font-family: 'JetBrains Mono', monospace; font-size: .65rem; width: 110px; color: var(--l70); }
+  .bar .track { flex: 1; height: 8px; background: var(--l08); border-radius: 4px; overflow: hidden; }
+  .bar .fill { height: 100%; background: var(--light); border-radius: 4px; }
+  .bar .n { font-family: 'JetBrains Mono', monospace; font-size: .65rem; color: var(--l40); width: 44px; text-align: right; }
+  /* modal transcript */
+  #modal { position: fixed; inset: 0; background: rgba(6,11,11,.85); display: none; align-items: center; justify-content: center; padding: 1.5rem; z-index: 50; }
+  #modal.open { display: flex; }
+  #modal .box { background: var(--dark); border: 1px solid var(--l15); border-radius: 16px; width: min(560px, 100%); max-height: 85vh; display: flex; flex-direction: column; }
+  #modal .box header { border-bottom: 1px solid var(--l08); }
+  #modal .msgs { overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; gap: .5rem; }
+  .b { max-width: 85%; padding: .5rem .8rem; border-radius: 12px; font-size: .8rem; line-height: 1.5; font-weight: 300; }
+  .b.user { align-self: flex-end; background: var(--light); color: var(--dark); font-weight: 400; }
+  .b.ai { align-self: flex-start; background: var(--l08); border: 1px solid var(--l08); }
+  .b time { display: block; font-family: 'JetBrains Mono', monospace; font-size: .55rem; opacity: .5; margin-top: .2rem; }
+  #login { position: fixed; inset: 0; background: var(--dark); display: flex; align-items: center; justify-content: center; z-index: 100; flex-direction: column; gap: 1rem; }
+  #login input { background: var(--l04); border: 1px solid var(--l15); border-radius: 999px; padding: .8rem 1.4rem; color: var(--light); font-family: 'JetBrains Mono', monospace; width: min(360px, 84vw); outline: none; }
+  .muted { color: var(--l40); font-size: .78rem; }
+  ::selection { background: var(--light); color: var(--dark); }
+</style>
+</head>
+<body>
+  <div id="login">
+    <div class="logo mono">admin<span>.izarley.com.br</span></div>
+    <input id="tok" type="password" placeholder="token de acesso" autocomplete="off" />
+    <button onclick="saveTok()">Entrar</button>
+    <div id="loginErr" class="muted"></div>
+  </div>
+
+  <header>
+    <div class="logo">admin<span>.izarley.com.br</span></div>
+    <div class="filters">
+      <select id="days" onchange="loadAll()">
+        <option value="7">7 dias</option>
+        <option value="30" selected>30 dias</option>
+        <option value="90">90 dias</option>
+      </select>
+      <button onclick="logout()">Sair</button>
+    </div>
+  </header>
+
+  <main>
+    <h2>Visão geral</h2>
+    <div class="cards" id="cards"></div>
+
+    <h2>Seções mais vistas</h2>
+    <div id="sections"></div>
+
+    <h2>Cliques</h2>
+    <div id="clicks"></div>
+
+    <h2>Leads &amp; Conversas</h2>
+    <div class="filters">
+      <button id="fLeads" class="active" onclick="setFilter(true)">Só leads</button>
+      <button id="fAll" onclick="setFilter(false)">Todas as sessões</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Quando</th><th>Nome</th><th>Número</th><th>Empresa</th><th>Dor</th><th>Msgs</th><th>WhatsApp</th></tr></thead>
+        <tbody id="leads"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="modal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="box">
+      <header><div class="logo mono" id="mTitle">conversa</div><button onclick="document.getElementById('modal').classList.remove('open')">Fechar</button></header>
+      <div class="msgs" id="mMsgs"></div>
+    </div>
+  </div>
+
+<script>
+const $ = (id) => document.getElementById(id)
+let onlyLeads = true
+
+function tok() { return localStorage.getItem('izarley-admin-token') || '' }
+function saveTok() { localStorage.setItem('izarley-admin-token', $('tok').value.trim()); boot() }
+function logout() { localStorage.removeItem('izarley-admin-token'); location.reload() }
+
+async function api(path) {
+  const res = await fetch(path, { headers: { Authorization: 'Bearer ' + tok() } })
+  if (res.status === 401) throw new Error('401')
+  return res.json()
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s ?? ''; return d.innerHTML }
+function fmtDate(s) { return s ? new Date(s).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—' }
+
+function bars(el, rows) {
+  const max = Math.max(1, ...rows.map(r => r.n))
+  el.innerHTML = rows.length ? rows.map(r =>
+    `<div class="bar"><span class="name">${esc(r.name || '—')}</span><span class="track"><span class="fill" style="width:${(r.n / max) * 100}%"></span></span><span class="n">${r.n}</span></div>`
+  ).join('') : '<div class="muted">Sem dados ainda.</div>'
+}
+
+async function loadAll() {
+  try {
+    const days = $('days').value
+    const s = await api('/admin/api/stats?days=' + days)
+    $('cards').innerHTML = [
+      ['Visitas', s.visits], ['Visitantes únicos', s.uniques], ['Conversas com a IA', s.chats],
+      ['Leads', s.leads], ['Cliques WhatsApp', s.waClicks],
+    ].map(([l, v]) => `<div class="card"><b>${v}</b><i>${l}</i></div>`).join('')
+    bars($('sections'), s.sections)
+    bars($('clicks'), s.clicks)
+
+    const leads = await api('/admin/api/leads?only=' + (onlyLeads ? 1 : 0))
+    $('leads').innerHTML = leads.length ? leads.map(l => `
+      <tr class="lead-row" onclick="openChat('${l.session_id}', '${esc(l.nome || 'Sem nome')}')">
+        <td class="mono">${fmtDate(l.last_seen)}</td>
+        <td>${esc(l.nome) || '<span class="muted">—</span>'}</td>
+        <td class="mono">${esc(l.numero) || '<span class="muted">—</span>'}</td>
+        <td>${esc(l.empresa) || '<span class="muted">—</span>'}</td>
+        <td style="max-width:260px">${esc(l.dor || l.resumo) || '<span class="muted">—</span>'}</td>
+        <td class="mono">${l.msgs}</td>
+        <td>${l.whatsapp_clicked ? '<span class="pill on">clicou</span>' : '<span class="pill">não</span>'}</td>
+      </tr>`).join('') : '<tr><td colspan="7" class="muted">Nada por aqui ainda.</td></tr>'
+
+    $('login').style.display = 'none'
+  } catch (e) {
+    $('login').style.display = 'flex'
+    if (tok()) $('loginErr').textContent = 'Token inválido.'
+  }
+}
+
+async function openChat(id, nome) {
+  $('mTitle').textContent = nome + ' · ' + id.slice(0, 8)
+  $('mMsgs').innerHTML = '<div class="muted">Carregando…</div>'
+  $('modal').classList.add('open')
+  const msgs = await api('/admin/api/conversa?session=' + encodeURIComponent(id))
+  $('mMsgs').innerHTML = msgs.length ? msgs.map(m =>
+    `<div class="b ${m.role}">${esc(m.content)}<time>${fmtDate(m.created_at)}</time></div>`
+  ).join('') : '<div class="muted">Sem mensagens.</div>'
+}
+
+function setFilter(v) {
+  onlyLeads = v
+  $('fLeads').classList.toggle('active', v)
+  $('fAll').classList.toggle('active', !v)
+  loadAll()
+}
+
+function boot() { loadAll() }
+boot()
+</script>
+</body>
+</html>

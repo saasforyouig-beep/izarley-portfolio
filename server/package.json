@@ -1,0 +1,14 @@
+{
+  "name": "izarley-chat-server",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env index.mjs",
+    "dev": "node --env-file-if-exists=.env --watch index.mjs"
+  },
+  "dependencies": {
+    "mysql2": "^3.23.2",
+    "openai": "^7.1.0"
+  }
+}
