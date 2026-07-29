@@ -43,8 +43,10 @@ export function useSectionTransitions() {
           },
         )
 
-        // saída: só quando a seção está realmente indo embora pelo topo
-        if (i < sections.length - 1) {
+        // saída: só para seções ALTAS (e não a última) — em seções curtas o
+        // gatilho pelo fundo dispara cedo demais e ela apaga no meio da tela
+        const isTall = sec.offsetHeight > window.innerHeight * 0.7
+        if (i < sections.length - 1 && isTall) {
           gsap.fromTo(
             sec,
             { rotateX: 0, y: 0, scale: 1, opacity: 1, transformOrigin: '50% 0%' },
