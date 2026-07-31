@@ -187,7 +187,10 @@ export default function DevSection() {
   const [stepImage, setStepImage] = useState<string | null>(null)
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    // cartões 3D com scrub só no desktop: no mobile (iOS Safari) esse
+    // combo deixa os projetos presos semi-invisíveis — lá tudo fica estático
+    const mm = gsap.matchMedia(sectionRef)
+    mm.add('(min-width: 901px)', () => {
       // cabeçalho entra uma vez, simples
       gsap.from('.dev-section__header', {
         y: 50,
@@ -232,9 +235,9 @@ export default function DevSection() {
           )
         }
       })
-    }, sectionRef)
+    })
 
-    return () => ctx.revert()
+    return () => mm.revert()
   }, [])
 
   function openTour(index: number) {
@@ -251,10 +254,12 @@ export default function DevSection() {
     document.body.classList.add('tour-open')
 
     // centraliza o mockup na tela antes de abrir o spotlight
+    // (visualViewport: altura visível real no iOS, descontando a barra do Safari)
+    const vh = window.visualViewport?.height ?? window.innerHeight
     const lenis = lenisStore.lenis
     if (lenis) {
       lenis.scrollTo(browser, {
-        offset: -(window.innerHeight - browser.offsetHeight) / 2,
+        offset: -(vh - browser.offsetHeight) / 2,
         duration: 0.7,
         onComplete: () => setActiveTour(index),
       })

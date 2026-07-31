@@ -72,19 +72,21 @@ export default function ProjectTour({
     setSpot(rect)
 
     // posiciona o card: à esquerda do alvo se couber, senão abaixo/acima
+    // (no mobile o card encolhe para caber; visualViewport = altura real no iOS)
     const vw = window.innerWidth
-    const vh = window.innerHeight
+    const vh = window.visualViewport?.height ?? window.innerHeight
+    const cardW = Math.min(CARD_W, vw - 32)
     let top: number
     let left: number
 
-    if (rect.left > CARD_W + CARD_GAP + 16) {
-      left = rect.left - CARD_W - CARD_GAP
+    if (rect.left > cardW + CARD_GAP + 16) {
+      left = rect.left - cardW - CARD_GAP
       top = rect.top
-    } else if (rect.left + rect.width + CARD_W + CARD_GAP < vw - 16) {
+    } else if (rect.left + rect.width + cardW + CARD_GAP < vw - 16) {
       left = rect.left + rect.width + CARD_GAP
       top = rect.top
     } else {
-      left = Math.min(Math.max(16, rect.left), vw - CARD_W - 16)
+      left = Math.min(Math.max(16, rect.left), vw - cardW - 16)
       top = rect.top + rect.height + CARD_GAP
     }
     top = Math.min(Math.max(16, top), vh - 240)

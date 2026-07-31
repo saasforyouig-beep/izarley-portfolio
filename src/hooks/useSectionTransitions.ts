@@ -14,7 +14,11 @@ gsap.registerPlugin(ScrollTrigger)
  */
 export function useSectionTransitions() {
   useEffect(() => {
-    const ctx = gsap.context(() => {
+    // coreografia 3D só no desktop: no mobile (iOS Safari em especial) o
+    // scrub + perspective deixa seções presas semi-invisíveis — lá as
+    // seções ficam estáticas, simples e sempre visíveis
+    const mm = gsap.matchMedia()
+    mm.add('(min-width: 901px)', () => {
       // hero e projetos ficam de fora: o hero tem coreografia própria e a
       // seção de projetos anima projeto a projeto (dentro do DevSection)
       const sections = gsap.utils.toArray<HTMLElement>(
@@ -69,6 +73,6 @@ export function useSectionTransitions() {
       })
     })
 
-    return () => ctx.revert()
+    return () => mm.revert()
   }, [])
 }
