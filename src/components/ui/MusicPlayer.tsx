@@ -1,7 +1,26 @@
 import { useEffect, useRef, useState } from 'react'
+import ElasticSlider from './ElasticSlider'
 
 /** Bandas de frequência lidas do analyser (graves → agudos), uma por barra. */
 const BANDS = [2, 5, 9, 14, 20]
+
+/** volume inicial (0–100) */
+const DEFAULT_VOLUME = 30
+
+const VolumeDownIcon = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M11 5 6.5 9H3v6h3.5L11 19V5Z" />
+    <path d="M15.5 9.5a4 4 0 0 1 0 5" />
+  </svg>
+)
+
+const VolumeUpIcon = (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M11 5 6.5 9H3v6h3.5L11 19V5Z" />
+    <path d="M15.5 9.5a4 4 0 0 1 0 5" />
+    <path d="M18 7.5a7 7 0 0 1 0 9" />
+  </svg>
+)
 
 /** Player fixo no canto inferior direito.
     Tocando: as barras dançam com o espectro real da música (Web Audio API).
@@ -18,6 +37,8 @@ export default function MusicPlayer() {
   const rafRef = useRef(0)
   const barsRef = useRef<HTMLSpanElement[]>([])
   const dataRef = useRef(new Uint8Array(32))
+  // volume atual (0–100) num ref: ensureAudio lê sem closure velha
+  const volumeRef = useRef(DEFAULT_VOLUME)
 
   useEffect(() => {
     return () => {
@@ -37,7 +58,7 @@ export default function MusicPlayer() {
     if (audioRef.current) return audioRef.current
     const audio = new Audio('/music.mp3')
     audio.loop = true
-    audio.volume = 0.3
+    audio.volume = volumeRef.current / 100
     audioRef.current = audio
     try {
       const ctx = new AudioContext()
@@ -97,6 +118,11 @@ export default function MusicPlayer() {
     void toggle()
   }
 
+  function handleVolume(v: number) {
+    volumeRef.current = v
+    if (audioRef.current) audioRef.current.volume = v / 100
+  }
+
   return (
     <>
       {prompt && (
@@ -117,22 +143,36 @@ export default function MusicPlayer() {
         </div>
       )}
 
-      <button
-        className={`player${playing ? ' player--on' : ''}${fake ? ' player--fake' : ''}`}
-        onClick={toggle}
-        aria-label={playing ? 'Pausar música' : 'Tocar música'}
-      >
-        <span className="player__bars">
-          {BANDS.map((_, i) => (
-            <span
-              key={i}
-              ref={(el) => {
-                if (el) barsRef.current[i] = el
-              }}
-            />
-          ))}
-        </span>
-      </button>
+      <div className="player-wrap">
+        {/* volume: aparece no hover do player */}
+        <div className="player-volume">
+          <ElasticSlider
+            defaultValue={DEFAULT_VOLUME}
+            startingValue={0}
+            maxValue={100}
+            leftIcon={VolumeDownIcon}
+            rightIcon={VolumeUpIcon}
+            onChange={handleVolume}
+          />
+        </div>
+
+        <button
+          className={`player${playing ? ' player--on' : ''}${fake ? ' player--fake' : ''}`}
+          onClick={toggle}
+          aria-label={playing ? 'Pausar música' : 'Tocar música'}
+        >
+          <span className="player__bars">
+            {BANDS.map((_, i) => (
+              <span
+                key={i}
+                ref={(el) => {
+                  if (el) barsRef.current[i] = el
+                }}
+              />
+            ))}
+          </span>
+        </button>
+      </div>
     </>
   )
 }

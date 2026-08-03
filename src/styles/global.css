@@ -1765,50 +1765,127 @@ body.tour-open .project {
   opacity: 0.85;
 }
 
-/* ============ Cursor (bola) ============ */
-
-@media (pointer: fine) {
-  html.has-cursor,
-  html.has-cursor * {
-    cursor: none !important;
-  }
-}
-
-.cursor-dot {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: rgba(var(--fg-rgb), 0.08);
-  border: 2px solid var(--light);
-  /* anel duplo + glow: visível sobre qualquer fundo, nos dois temas */
-  box-shadow:
-    0 0 0 1.5px rgba(var(--bg-rgb), 0.55),
-    0 0 16px rgba(var(--fg-rgb), 0.4);
-  pointer-events: none;
-  z-index: 999;
-  will-change: transform;
-}
-
-html.has-cursor .cursor-dot {
-  display: block;
-}
-
 /* ============ Music Player ============ */
 
-.player {
+.player-wrap {
   position: fixed;
   /* compensa o padding interno para as barras alinharem no gutter */
   right: calc(var(--gutter) - 0.7rem);
   bottom: 1.6rem;
   z-index: 90;
+}
+
+.player {
   background: transparent;
   border: none;
   padding: 0.7rem;
   cursor: pointer;
+}
+
+/* painel de volume: invisível até o hover no player */
+.player-volume {
+  position: absolute;
+  bottom: calc(100% + 0.3rem);
+  right: 0;
+  padding: 0.7rem 1rem 0.2rem;
+  background: rgba(var(--bg-rgb), 0.92);
+  border: 1px solid var(--light-15);
+  border-radius: 14px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* ponte invisível sobre o vão entre o painel e o player:
+   o mouse atravessa sem o hover se perder */
+.player-volume::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 0.6rem;
+}
+
+.player-wrap:hover .player-volume,
+.player-volume:hover,
+.player-volume:focus-within {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* ---- ElasticSlider (nas cores do site) ---- */
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 11rem;
+  color: var(--light-70);
+}
+
+.slider-wrapper {
+  display: flex;
+  width: 100%;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.slider-root {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 200px;
+  flex-grow: 1;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  align-items: center;
+  padding: 0.8rem 0;
+}
+
+.slider-root:active {
+  cursor: grabbing;
+}
+
+.slider-track-wrapper {
+  display: flex;
+  flex-grow: 1;
+}
+
+.slider-track {
+  position: relative;
+  height: 100%;
+  flex-grow: 1;
+  overflow: hidden;
+  border-radius: 9999px;
+  background-color: rgba(var(--fg-rgb), 0.18);
+}
+
+.slider-range {
+  position: absolute;
+  height: 100%;
+  background-color: var(--light);
+  border-radius: 9999px;
+}
+
+.value-indicator {
+  color: var(--light-40);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  margin: 0;
 }
 
 .player__bars {
